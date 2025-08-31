@@ -14,3 +14,4 @@ Woche 6 – PR-Automation, Preview-Deploy, Test-Report
 
 4) Nützlich:
 - Tests lokal: python -m pytest -q app
+- PR Demo am So 31 Aug 2025 20:22:07 CEST
