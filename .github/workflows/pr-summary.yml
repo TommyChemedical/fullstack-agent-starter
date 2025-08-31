@@ -1,0 +1,44 @@
+name: PR Checks & Summary
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  test-and-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r agent/requirements.txt
+          pip install -r app/requirements.txt
+
+      - name: Run tests (with JUnit XML)
+        run: |
+          mkdir -p test-results
+          pytest -q app --junitxml=test-results/pytest.xml || true
+
+      - name: Build PR summary + HTML report
+        run: |
+          python .github/scripts/pr_summary.py --junit test-results/pytest.xml --out workspaces/report.html
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-report
+          path: workspaces/report.html
+          if-no-files-found: warn
+
+      - name: Comment on PR
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-file: workspaces/PR_SUMMARY.md
