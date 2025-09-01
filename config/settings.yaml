@@ -1,0 +1,19 @@
+telemetry:
+  enabled: true
+  dir: workspaces/telemetry
+exec:
+  cwd: workspaces
+  timeout_sec: 180
+  allowed_bins: [python, pytest, uvicorn, bash, sh]
+  block_patterns:
+    - "rm -rf /"
+    - "mkfs"
+    - "dd if="
+    - ":(){:|:&};:"
+    - "shutdown"
+    - "reboot"
+    - "chmod 777 -R /"
+    - "chown -R /"
+    - "/dev/sd"
+    - ">/dev/"
+  block_net: true
