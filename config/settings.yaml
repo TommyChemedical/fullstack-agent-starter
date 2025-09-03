@@ -4,16 +4,22 @@ telemetry:
 exec:
   cwd: workspaces
   timeout_sec: 180
-  allowed_bins: [python, pytest, uvicorn, bash, sh]
+  allowed_bins:
+  - python
+  - pytest
+  - uvicorn
+  - bash
+  - sh
+  - git
   block_patterns:
-    - "rm -rf /"
-    - "mkfs"
-    - "dd if="
-    - ":(){:|:&};:"
-    - "shutdown"
-    - "reboot"
-    - "chmod 777 -R /"
-    - "chown -R /"
-    - "/dev/sd"
-    - ">/dev/"
+  - rm -rf /
+  - mkfs
+  - dd if=
+  - ':(){:|:&};:'
+  - shutdown
+  - reboot
+  - chmod 777 -R /
+  - chown -R /
+  - /dev/sd
+  - '>/dev/'
   block_net: true
